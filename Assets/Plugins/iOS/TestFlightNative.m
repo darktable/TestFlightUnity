@@ -10,12 +10,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "TestFlight.h"
 
-void TestFlight_TakeOff(const char* token)
-{
+void TestFlight_TakeOff(const char* token) {
+#define TESTING 1
+#ifdef TESTING
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#endif
+    
     [TestFlight takeOff:[NSString stringWithUTF8String:token]];
 }
 
-void TestFlight_PassCheckpoint(const char* checkpoint)
-{
+void TestFlight_PassCheckpoint(const char* checkpoint) {
     [TestFlight passCheckpoint:[NSString stringWithUTF8String:checkpoint]];
 }
+
+void TestFlight_OpenFeedbackDialog() {
+    [TestFlight openFeedbackView];
+}
+
+void TestFlight_SubmitFeedback(const char* feedback) {
+    [TestFlight submitFeedback:feedback];
+}
+
+void TestFlight_Log(const char* message) {
+    TFLog([NSString stringWithUTF8String:message]);
+}
+
+void TestFlight_EnableAppleSystemLogger(BOOL enabled) {
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:enabled] forKey:@"logToConsole"]];
+}
+
+void TestFlight_EnableSTDErrLogger(BOOL enabled) {
+    [TestFlight setOptions:[NSDictionary dictionaryWithObject:[NSNumber numberWithBool:enabled] forKey:@"logToSTDERR"]];
+}
+

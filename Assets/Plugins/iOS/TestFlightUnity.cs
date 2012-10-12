@@ -8,31 +8,80 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#if UNITY_IOS && !UNITY_EDITOR
+#define IOS_DEVICE
+#endif
+
 using UnityEngine;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-public class TestFlightUnity {
+public static class TestFlightUnity {
 	
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if IOS_DEVICE
 	[DllImport ("__Internal")]
 	private static extern void TestFlight_TakeOff (string token);
 
 	[DllImport ("__Internal")]
 	private static extern void TestFlight_PassCheckpoint (string checkpoint);
+
+	[DllImport ("__Internal")]
+	private static extern void TestFlight_OpenFeedbackDialog ();
+
+	[DllImport ("__Internal")]
+	private static extern void TestFlight_SubmitFeedback (string feedback);
+
+	[DllImport ("__Internal")]
+	private static extern void TestFlight_Log (string message);
+
+	[DllImport ("__Internal")]
+	private static extern void TestFlight_EnableAppleSystemLogger (bool enabled);
+
+	[DllImport ("__Internal")]
+	private static extern void TestFlight_EnableSTDErrLogger (bool enabled);
 #endif
 
 	public static void TakeOff(string token)
 	{
-#if UNITY_IPHONE && !UNITY_EDITOR
+#if IOS_DEVICE
 		TestFlight_TakeOff(token);
 #endif
 	}
 
-	public static void PassCheckpoint(string checkpoint)
-	{
-#if UNITY_IPHONE && !UNITY_EDITOR
+	public static void PassCheckpoint(string checkpoint) {
+#if IOS_DEVICE
 		TestFlight_PassCheckpoint(checkpoint);
 #endif
 	}
+
+	public static void OpenFeedbackDialog() {
+#if IOS_DEVICE
+		TestFlight_OpenFeedbackDialog();
+#endif
+	}
+
+	public static void SubmitFeedback(string feedback) {
+#if IOS_DEVICE
+		TestFlight_SubmitFeedback(feedback);
+#endif
+	}
+
+	public static void Log(string message) {
+#if IOS_DEVICE
+		TestFlight_Log(message);
+#endif
+	}
+
+	public static void EnableAppleSystemLogger(bool enabled) {
+#if IOS_DEVICE
+		TestFlight_EnableAppleSystemLogger(enabled);
+#endif
+	}
+
+	public static void EnableSTDErrLogger(bool enabled) {
+#if IOS_DEVICE
+		TestFlight_EnableSTDErrLogger(enabled);
+#endif
+	}
 }
+
